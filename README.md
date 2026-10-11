@@ -2,9 +2,9 @@
 
 <a href="https://mimvo.dev">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/mimvo-banner-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="docs/assets/mimvo-banner-light.png">
-    <img alt="Mimvo: security scanner for AI agent memory" src="docs/assets/mimvo-banner-light.png" width="100%">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/jawadhussein462/mimvo/main/docs/assets/mimvo-banner-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/jawadhussein462/mimvo/main/docs/assets/mimvo-banner-light.png">
+    <img alt="Mimvo: security scanner for AI agent memory" src="https://raw.githubusercontent.com/jawadhussein462/mimvo/main/docs/assets/mimvo-banner-light.png" width="100%">
   </picture>
 </a>
 
@@ -12,8 +12,8 @@
 
 [![CI](https://github.com/jawadhussein462/mimvo/actions/workflows/ci.yml/badge.svg)](https://github.com/jawadhussein462/mimvo/actions/workflows/ci.yml)
 [![PyPI](https://img.shields.io/pypi/v/mimvo.svg)](https://pypi.org/project/mimvo/)
-[![Python](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-blue.svg)](pyproject.toml)
-[![License](https://img.shields.io/badge/license-Apache--2.0-green.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://github.com/jawadhussein462/mimvo/blob/main/pyproject.toml)
+[![License](https://img.shields.io/badge/license-Apache--2.0-green.svg)](https://github.com/jawadhussein462/mimvo/blob/main/LICENSE)
 [![Status](https://img.shields.io/badge/status-alpha-orange.svg)](#project-status)
 [![Website](https://img.shields.io/badge/web-mimvo.dev-0c1115.svg)](https://mimvo.dev)
 
@@ -53,7 +53,7 @@ $ mimvo scan chroma --path ./chroma_db --collection agent_memory --report report
 ```
 
 <p align="center">
-  <img src="docs/report.png" alt="Mimvo HTML report: a verdict headline, a triage plan of records to delete, quarantine and review, a severity breakdown, and a filterable list of findings with masked excerpts, fix steps and OWASP and CWE references" width="720">
+  <img src="https://raw.githubusercontent.com/jawadhussein462/mimvo/main/docs/report.png" alt="Mimvo HTML report: a verdict headline, a triage plan of records to delete, quarantine and review, a severity breakdown, and a filterable list of findings with masked excerpts, fix steps and OWASP and CWE references" width="720">
 </p>
 
 ## Highlights
@@ -209,7 +209,7 @@ Every format is built from the same `ScanReport`, carries the same rule ids, and
 
 **Fingerprints.** Each finding's `fingerprint` hashes the rule id and the record id (never the text), so the same problem on the same record keeps the same id across scans. Use it to track tickets, suppress known findings, or let code scanning close alerts when a record is fixed.
 
-**Rules.** The finding code is the rule id (`secret_detected`, `memory_poisoning`, …). Titles, explanations, fix steps, and CWE mappings live in [`mimvo/rules.py`](mimvo/rules.py) and are shared by every format.
+**Rules.** The finding code is the rule id (`secret_detected`, `memory_poisoning`, …). Titles, explanations, fix steps, and CWE mappings live in [`mimvo/rules.py`](https://github.com/jawadhussein462/mimvo/blob/main/mimvo/rules.py) and are shared by every format.
 
 ## What it finds
 
@@ -241,7 +241,7 @@ A record with several problems appears once per problem. `report.flagged` counts
 
 ## Accuracy
 
-The default detectors are measured on public datasets they were not written against: GitHub's own security help articles as support documentation, agent memory from AgentDojo and BIPIA, and attacks from AgentDojo, InjecAgent, BIPIA, and PoisonedRAG. Samples are split by a hash of their text; detector work looked only at the `dev` half, and these are the held-out `test` numbers. Method, datasets, and licences: [`benchmarks/`](benchmarks/README.md).
+The default detectors are measured on public datasets they were not written against: GitHub's own security help articles as support documentation, agent memory from AgentDojo and BIPIA, and attacks from AgentDojo, InjecAgent, BIPIA, and PoisonedRAG. Samples are split by a hash of their text; detector work looked only at the `dev` half, and these are the held-out `test` numbers. Method, datasets, and licences: [`benchmarks/`](https://github.com/jawadhussein462/mimvo/blob/main/benchmarks/README.md).
 
 | Benign memories (lower is better) | Samples | Flagged |
 |---|--:|--:|
@@ -257,7 +257,7 @@ The default detectors are measured on public datasets they were not written agai
 | BIPIA task-switch and content-insertion attacks | 73 | 6% |
 | PoisonedRAG fluent false facts, scanned one at a time | 761 | 0% |
 
-Explicit injection is caught; a planted request with no framing reads like something a user would store, and a fluent false fact reads like any other fact. Those need the model and corpus detectors below. PoisonedRAG plants five paraphrases per target, which `TrustRAGDetector` catches in embedding space; with no vectors its lexical fallback catches almost none (see [`RESULTS.md`](benchmarks/RESULTS.md)), so scan a store that keeps its vectors.
+Explicit injection is caught; a planted request with no framing reads like something a user would store, and a fluent false fact reads like any other fact. Those need the model and corpus detectors below. PoisonedRAG plants five paraphrases per target, which `TrustRAGDetector` catches in embedding space; with no vectors its lexical fallback catches almost none (see [`RESULTS.md`](https://github.com/jawadhussein462/mimvo/blob/main/benchmarks/RESULTS.md)), so scan a store that keeps its vectors.
 
 ## Detectors
 
@@ -347,7 +347,7 @@ guard = Mimvo(checks=[
 
 `min_detectors` is counted per finding code. Raising it cuts false positives and can drop a real hit that only one detector saw.
 
-Every model detector takes an injectable callable (`classify=`, `tag=`, `perplexity=`, `transport=`, …). Use it to point at a remote inference endpoint, or to test without downloading weights; [`examples/09_model_detectors.py`](examples/09_model_detectors.py) runs fully offline this way.
+Every model detector takes an injectable callable (`classify=`, `tag=`, `perplexity=`, `transport=`, …). Use it to point at a remote inference endpoint, or to test without downloading weights; [`examples/09_model_detectors.py`](https://github.com/jawadhussein462/mimvo/blob/main/examples/09_model_detectors.py) runs fully offline this way.
 
 ### Writing your own detector
 
@@ -368,7 +368,7 @@ guard = Mimvo(checks=[
 ])
 ```
 
-Override `detect(candidate, context)` instead of `detect_text` when you need the stored embedding (`candidate.embedding`), the rest of the store (`context.existing`), or the retrieval query (`context.query`). A detector that overrides `detect` must declare `needs_corpus`: `True` runs it after every record has been read, so `context.existing` is the whole store; `False` runs it while records stream, for a detector that only reads the candidate. Building a check with an undeclared `detect` override raises `ConfigurationError`. Pass `score=` to `self.hit(...)` so findings get a confidence. Put kinds, labels, and scores in evidence, never the matched text. See [CONTRIBUTING.md](CONTRIBUTING.md#adding-a-detector-a-new-method-for-an-existing-security-concern) for the full checklist.
+Override `detect(candidate, context)` instead of `detect_text` when you need the stored embedding (`candidate.embedding`), the rest of the store (`context.existing`), or the retrieval query (`context.query`). A detector that overrides `detect` must declare `needs_corpus`: `True` runs it after every record has been read, so `context.existing` is the whole store; `False` runs it while records stream, for a detector that only reads the candidate. Building a check with an undeclared `detect` override raises `ConfigurationError`. Pass `score=` to `self.hit(...)` so findings get a confidence. Put kinds, labels, and scores in evidence, never the matched text. See [CONTRIBUTING.md](https://github.com/jawadhussein462/mimvo/blob/main/CONTRIBUTING.md#adding-a-detector-a-new-method-for-an-existing-security-concern) for the full checklist.
 
 ### Packaging checks and sources as plugins
 
@@ -576,7 +576,7 @@ Most of the time is the phrase rules (about half a millisecond per record) and t
 
 ## Limitations
 
-**Detection is a signal, not a guarantee.** The default detectors catch text that is itself the attack: overrides, fake system messages, control-bypass claims, redirects, secrets. They miss planted requests with no such framing, fluent false facts, and most non-English text other than the common "ignore previous instructions" variants. [Accuracy](#accuracy) has the numbers. [`tests/corpus.py`](tests/corpus.py) is a regression set written alongside the rules; attacks they are known to miss are kept in `KNOWN_MISSES`, and those are what the model detectors are for.
+**Detection is a signal, not a guarantee.** The default detectors catch text that is itself the attack: overrides, fake system messages, control-bypass claims, redirects, secrets. They miss planted requests with no such framing, fluent false facts, and most non-English text other than the common "ignore previous instructions" variants. [Accuracy](#accuracy) has the numbers. [`tests/corpus.py`](https://github.com/jawadhussein462/mimvo/blob/main/tests/corpus.py) is a regression set written alongside the rules; attacks they are known to miss are kept in `KNOWN_MISSES`, and those are what the model detectors are for.
 
 **Near-duplicates are flagged.** `TrustRAGDetector` cannot tell coordinated poison from legitimate copies of the same fact, so templated memories can produce `poisoning_cluster` findings. They are low severity. Raise `min_cluster`, or drop the detector with `PoisoningCheck(detectors=[HeuristicPoisoningDetector()])`.
 
@@ -584,11 +584,11 @@ Most of the time is the phrase rules (about half a millisecond per record) and t
 
 **Callback detectors are hooks, not models.** Detectors that take `complete=`, `probe=`, `nli=`, `embed=`, or `score=` implement the method from the cited paper around a function you supply. They do nothing until you pass one.
 
-See [SECURITY.md](SECURITY.md) for the full threat model.
+See [SECURITY.md](https://github.com/jawadhussein462/mimvo/blob/main/SECURITY.md) for the full threat model.
 
 ## Project status
 
-Mimvo is **v0.2, alpha**. The public API (`Mimvo`, `ScanReport`, the check and detector classes) may change before 1.0; breaking changes are recorded in [CHANGELOG.md](CHANGELOG.md).
+Mimvo is **v0.2, alpha**. The public API (`Mimvo`, `ScanReport`, the check and detector classes) may change before 1.0; breaking changes are recorded in [CHANGELOG.md](https://github.com/jawadhussein462/mimvo/blob/main/CHANGELOG.md).
 
 ## Contributing
 
@@ -599,8 +599,8 @@ uv pip install -e ".[dev]" && pre-commit install
 pytest && ruff check . && mypy mimvo
 ```
 
-New detectors, scan sources, and labelled attack examples are especially welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) first. Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md), not in public issues.
+New detectors, scan sources, and labelled attack examples are especially welcome. Read [CONTRIBUTING.md](https://github.com/jawadhussein462/mimvo/blob/main/CONTRIBUTING.md) first. Report vulnerabilities privately as described in [SECURITY.md](https://github.com/jawadhussein462/mimvo/blob/main/SECURITY.md), not in public issues.
 
 ## License
 
-[Apache-2.0](LICENSE). Optional models and services have their own licences and terms; check them before you deploy (Piiranha, for example, is non-commercial).
+[Apache-2.0](https://github.com/jawadhussein462/mimvo/blob/main/LICENSE). Optional models and services have their own licences and terms; check them before you deploy (Piiranha, for example, is non-commercial).
