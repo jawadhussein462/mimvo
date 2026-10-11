@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="156" viewBox="0 0 700 156" role="img" aria-labelledby="title desc">
+  <title id="title">Mimvo scan summary</title>
+  <desc id="desc">Scanned 48,291 records. 137 records flagged (0.28%): 12 critical, 31 high, 58 medium, 36 low. Report written to report.html.</desc>
+  <rect width="700" height="156" rx="8" fill="#f6f8fa"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="15">
+    <text x="20" y="36" fill="#1a7f37">&#x2713;</text>
+    <text x="36" y="36" fill="#1f2328">Scanned 48,291 records</text>
+    <text x="20" y="62" fill="#d97706">!</text>
+    <text x="36" y="62" fill="#1f2328">137 records flagged (0.28%)</text>
+    <text x="38" y="88">
+      <tspan fill="#d1242f">&#x2022; 12 critical</tspan>
+      <tspan fill="#1f2328">  </tspan>
+      <tspan fill="#e8590c">&#x2022; 31 high</tspan>
+      <tspan fill="#1f2328">  </tspan>
+      <tspan fill="#b58105">&#x2022; 58 medium</tspan>
+      <tspan fill="#1f2328">  </tspan>
+      <tspan fill="#5f87af">&#x2022; 36 low</tspan>
+    </text>
+    <text x="20" y="132" fill="#1a7f37">&#x2713;</text>
+    <text x="36" y="132" fill="#1f2328">Report written to </text>
+    <text x="210" y="132" fill="#1f2328" text-decoration="underline">report.html</text>
+  </g>
+</svg>

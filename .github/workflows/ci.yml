@@ -1,0 +1,86 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: uv sync --extra dev
+      - name: Ruff (lint)
+        run: uv run ruff check mimvo tests examples benchmarks
+      - name: Ruff (format check)
+        run: uv run ruff format --check mimvo tests examples benchmarks
+      - name: mypy
+        run: uv run mypy mimvo
+
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install (core + dev only, no provider SDKs, no numpy)
+        run: uv sync --extra dev
+      - name: Run tests (pure-Python vector index; integration tests skip)
+        run: uv run pytest -ra
+      - name: Run examples (smoke)
+        run: |
+          for f in examples/*.py; do
+            echo "=== $f ==="
+            uv run python "$f"
+          done
+
+  backends:
+    # Scan sources against real store clients running in-process:
+    # Chroma ephemeral, Qdrant :memory:, LangChain InMemoryVectorStore,
+    # LangGraph InMemoryStore, and mem0's own Qdrant store (tests/integration).
+    # The full suite runs again with numpy, so the numpy vector index is
+    # tested too. No services or API keys needed.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          python-version: "3.12"
+      - name: Install (core + dev + all store clients + numpy)
+        run: uv sync --extra dev --extra all
+      - name: Scan sources against real clients
+        run: uv run pytest -ra tests/integration
+      - name: Full suite with numpy
+        run: uv run pytest -ra
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [lint, test, backends]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          python-version: "3.12"
+      - name: Build sdist + wheel
+        run: uv build
+      - name: Check clean-env import
+        run: |
+          uv venv /tmp/clean
+          uv pip install --python /tmp/clean/bin/python dist/*.whl
+          /tmp/clean/bin/python -c "import mimvo; print(mimvo.__version__)"

@@ -1,0 +1,175 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mimvo"
+version = "0.2.0"
+description = "Scan agent memory for poisoned facts, hidden instructions, and leaked secrets."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Mimvo contributors" }]
+keywords = [
+    "ai",
+    "agents",
+    "memory",
+    "long-term-memory",
+    "rag",
+    "security",
+    "poisoning",
+    "prompt-injection",
+    "secrets",
+    "chroma",
+    "qdrant",
+    "pgvector",
+    "pinecone",
+    "langchain",
+    "langgraph",
+    "mem0",
+    "guardrails",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+
+# Core stays lightweight: pydantic and loguru. Everything else is an optional extra.
+dependencies = [
+    "loguru>=0.7",
+    "pydantic>=2.7",
+]
+
+[project.urls]
+Homepage = "https://mimvo.dev"
+Documentation = "https://github.com/jawadhussein462/mimvo#readme"
+Repository = "https://github.com/jawadhussein462/mimvo"
+Changelog = "https://github.com/jawadhussein462/mimvo/blob/main/CHANGELOG.md"
+Issues = "https://github.com/jawadhussein462/mimvo/issues"
+Dashboard = "https://mimvo.dev/dashboard"
+
+[project.optional-dependencies]
+chroma = ["chromadb>=0.5.0"]
+qdrant = ["qdrant-client>=1.9.0"]
+pgvector = ["psycopg[binary]>=3.1"]
+pinecone = ["pinecone>=5.0"]
+langchain = ["langchain-core>=0.3"]
+langgraph = ["langgraph-checkpoint>=2.0"]
+mem0 = ["mem0ai>=0.1.100", "pyyaml>=6.0"]
+# Exact nearest-neighbour search for the vector detectors on large stores.
+fast = ["numpy>=1.24"]
+otel = ["opentelemetry-api>=1.20.0", "opentelemetry-sdk>=1.20.0"]
+# Model-based detectors (opt-in; the default pipeline stays offline and dependency-free).
+hf = ["transformers>=4.40", "torch>=2.0"]
+gliner2 = ["gliner2>=0.1"]
+gliner = ["gliner>=0.2"]
+presidio = ["presidio-analyzer>=2.2"]
+detect-secrets = ["detect-secrets>=1.5"]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "hypothesis>=6.100",
+    "ruff>=0.6",
+    "mypy>=1.10",
+    "pre-commit>=3.7",
+]
+all = [
+    "chromadb>=0.5.0",
+    "qdrant-client>=1.9.0",
+    "psycopg[binary]>=3.1",
+    "pinecone>=5.0",
+    "langchain-core>=0.3",
+    "langgraph-checkpoint>=2.0",
+    "mem0ai>=0.1.100",
+    "numpy>=1.24",
+    "opentelemetry-api>=1.20.0",
+    "opentelemetry-sdk>=1.20.0",
+]
+
+[project.scripts]
+mimvo = "mimvo.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["mimvo"]
+
+[tool.hatch.build.targets.sdist]
+include = ["mimvo", "README.md", "LICENSE", "CHANGELOG.md"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["mimvo", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "SIM", # flake8-simplify
+    "C4",  # flake8-comprehensions
+    "PIE", # flake8-pie
+    "RUF", # ruff-specific
+]
+ignore = [
+    "B008",   # function call in default argument (we use pydantic Field)
+    "SIM105", # contextlib.suppress vs try/except pass — explicit is fine here
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["B011", "E501"]
+"examples/**" = ["E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["mimvo"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+no_implicit_optional = true
+strict_equality = true
+plugins = ["pydantic.mypy"]
+exclude = ["tests/", "examples/", "build/", "dist/"]
+
+[[tool.mypy.overrides]]
+module = [
+    "mem0",
+    "yaml",
+    "chromadb.*",
+    "qdrant_client.*",
+    "psycopg.*",
+    "pinecone.*",
+    "opentelemetry.*",
+    "transformers.*",
+    "torch.*",
+    "gliner2.*",
+    "gliner.*",
+    "presidio_analyzer.*",
+    "detect_secrets.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-ra -q"
+testpaths = ["tests"]
+asyncio_mode = "auto"
+filterwarnings = ["error::DeprecationWarning:mimvo.*"]
+
+[tool.coverage.run]
+source = ["mimvo"]
+branch = true

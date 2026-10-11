@@ -1,0 +1,48 @@
+name: Release
+
+# Publish to PyPI when a version tag is pushed (e.g. `git tag v0.2.0 && git push --tags`).
+# Uses PyPI Trusted Publishing (OIDC): no API token stored in GitHub.
+# One-time setup on pypi.org -> "Publishing" -> add a pending publisher:
+#   owner: jawadhussein462, repo: mimvo, workflow: release.yml, environment: pypi
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          python-version: "3.12"
+      - name: Check tag matches package version
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          PKG=$(grep -Po '(?<=__version__ = ")[^"]+' mimvo/_version.py)
+          test "$TAG" = "$PKG" || { echo "tag $TAG != version $PKG"; exit 1; }
+      - name: Build sdist + wheel
+        run: uv build
+      - name: Smoke-test the wheel in a clean env
+        run: |
+          uv venv /tmp/clean
+          uv pip install --python /tmp/clean/bin/python dist/*.whl
+          /tmp/clean/bin/mimvo --help
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
