@@ -6,6 +6,14 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-10-11
+
+### Fixed
+
+- README images and file links now use absolute GitHub URLs, so the
+  banner, the report screenshot and links such as CONTRIBUTING.md work
+  on the PyPI project page (PyPI cannot resolve repository-relative paths).
+
 ## [0.2.0] - 2026-10-11
 
 First release published to PyPI (`pip install mimvo`). 0.1.0 was never
@@ -253,6 +261,7 @@ boundary between an AI agent and its memory backend.
 - Test suite (unit, integration, security-invariant, property-based) and six
   runnable examples.
 
-[Unreleased]: https://github.com/jawadhussein462/mimvo/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/jawadhussein462/mimvo/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/jawadhussein462/mimvo/releases/tag/v0.2.1
 [0.2.0]: https://github.com/jawadhussein462/mimvo/releases/tag/v0.2.0
 [0.1.0]: https://github.com/jawadhussein462/mimvo/releases/tag/v0.1.0
