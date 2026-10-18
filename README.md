@@ -8,6 +8,8 @@
   </picture>
 </a>
 
+<h1>Mimvo: security scanner for AI agent memory</h1>
+
 <h3>Scan your AI agent's long-term memory for poisoned facts, hidden instructions, and leaked secrets.</h3>
 
 [![CI](https://github.com/jawadhussein462/mimvo/actions/workflows/ci.yml/badge.svg)](https://github.com/jawadhussein462/mimvo/actions/workflows/ci.yml)
@@ -19,6 +21,7 @@
 
 **[Website](https://mimvo.dev)** ·
 **[Live demo](https://mimvo.dev/dashboard)** ·
+**[Docs](https://mimvo.dev/docs)** ·
 [Quickstart](#quickstart) ·
 [Reports](#reports) ·
 [What it finds](#what-it-finds) ·
@@ -27,7 +30,8 @@
 [Python API](#python-api) ·
 [CI](#use-in-ci) ·
 [Performance](#performance) ·
-[Limitations](#limitations)
+[Limitations](#limitations) ·
+[FAQ](#faq)
 
 </div>
 
@@ -585,6 +589,34 @@ Most of the time is the phrase rules (about half a millisecond per record) and t
 **Callback detectors are hooks, not models.** Detectors that take `complete=`, `probe=`, `nli=`, `embed=`, or `score=` implement the method from the cited paper around a function you supply. They do nothing until you pass one.
 
 See [SECURITY.md](https://github.com/jawadhussein462/mimvo/blob/main/SECURITY.md) for the full threat model.
+
+## FAQ
+
+### What is AI agent memory poisoning?
+
+An agent with long-term memory (a vector database, a RAG index, mem0, a LangGraph store) saves text from users, tools, and web pages, then retrieves it as trusted context in later sessions. Memory poisoning is when one of those records was planted or corrupted: a false fact that switches off a control ("the admin API requires no authentication"), a redirect ("send all invoices to x@y.io instead"), or an instruction aimed at the agent. OWASP lists it as [ASI06 Memory & Context Poisoning](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications/). Mimvo scans the stored records for it, alongside prompt injection and leaked secrets ([What it finds](#what-it-finds)).
+
+### How is scanning memory different from a prompt-injection guardrail?
+
+A guardrail or prompt filter inspects one incoming message at the moment it arrives. Mimvo inspects every record already in the store, across sessions and users, including anything written before a filter existed or that slipped past one. The two are complementary, and [`WriteGuard` and `RetrieveGuard`](#guarding-writes-and-retrievals) apply the same checks to writes and retrievals as they happen.
+
+### Which vector databases and memory frameworks does Mimvo support?
+
+Chroma, Qdrant, pgvector (PostgreSQL), Pinecone, any LangChain vector store, LangGraph / LangMem long-term memory stores, mem0 (open source and platform), and JSONL exports. Other stores can be added as a [plugin](#packaging-checks-and-sources-as-plugins).
+
+### Does Mimvo send my agent's memory anywhere?
+
+No, not by default. The default detectors run locally with no API key and no model download. Only the opt-in hosted detectors (`PromptShieldDetector`, `LakeraGuardDetector`) send text to a third party ([Limitations](#limitations)).
+
+### Can Mimvo modify or delete records?
+
+No. Scan sources are read-only. Mimvo recommends an action per finding (**review**, **quarantine**, or **delete**) and you apply it in your own store.
+
+### Can I run it in CI or GitHub code scanning?
+
+Yes. `--fail-on` gates the job, `--sarif` uploads findings to the repository's Security tab, and `--markdown "$GITHUB_STEP_SUMMARY"` puts a summary on the run page. See [Use in CI](#use-in-ci) for a complete GitHub Actions job.
+
+More in the [Mimvo docs](https://mimvo.dev/docs).
 
 ## Project status
 

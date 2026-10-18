@@ -6,6 +6,14 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Documentation
+
+- README: a page heading, a link to the docs at mimvo.dev/docs, and an FAQ
+  (memory poisoning, guardrails versus memory scanning, supported stores,
+  data handling, CI).
+- PyPI metadata: a more descriptive summary, the Documentation link now
+  points to mimvo.dev/docs, and more keywords and classifiers.
+
 ## [0.2.1] - 2026-10-11
 
 ### Fixed

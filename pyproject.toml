@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "mimvo"
 version = "0.2.1"
-description = "Scan agent memory for poisoned facts, hidden instructions, and leaked secrets."
+description = "Security scanner for AI agent memory: find poisoned facts, prompt injections, and leaked secrets in vector databases and RAG stores."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
@@ -28,15 +28,31 @@ keywords = [
     "langgraph",
     "mem0",
     "guardrails",
+    "ai-security",
+    "llm-security",
+    "agent-security",
+    "rag-security",
+    "memory-poisoning",
+    "rag-poisoning",
+    "vector-database",
+    "secret-scanning",
+    "pii",
+    "owasp",
+    "sarif",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
+    "Environment :: Console",
     "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
     "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Topic :: Security",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Typing :: Typed",
@@ -50,7 +66,7 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://mimvo.dev"
-Documentation = "https://github.com/jawadhussein462/mimvo#readme"
+Documentation = "https://mimvo.dev/docs"
 Repository = "https://github.com/jawadhussein462/mimvo"
 Changelog = "https://github.com/jawadhussein462/mimvo/blob/main/CHANGELOG.md"
 Issues = "https://github.com/jawadhussein462/mimvo/issues"
