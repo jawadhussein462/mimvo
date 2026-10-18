@@ -6,6 +6,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-10-18
+
 ### Documentation
 
 - README: a page heading, a link to the docs at mimvo.dev/docs, and an FAQ
@@ -269,7 +271,8 @@ boundary between an AI agent and its memory backend.
 - Test suite (unit, integration, security-invariant, property-based) and six
   runnable examples.
 
-[Unreleased]: https://github.com/jawadhussein462/mimvo/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/jawadhussein462/mimvo/compare/v0.2.2...HEAD
+[0.2.2]: https://github.com/jawadhussein462/mimvo/releases/tag/v0.2.2
 [0.2.1]: https://github.com/jawadhussein462/mimvo/releases/tag/v0.2.1
 [0.2.0]: https://github.com/jawadhussein462/mimvo/releases/tag/v0.2.0
 [0.1.0]: https://github.com/jawadhussein462/mimvo/releases/tag/v0.1.0

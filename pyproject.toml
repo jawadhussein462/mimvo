@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "mimvo"
-version = "0.2.1"
+version = "0.2.2"
 description = "Security scanner for AI agent memory: find poisoned facts, prompt injections, and leaked secrets in vector databases and RAG stores."
 readme = "README.md"
 requires-python = ">=3.11"
